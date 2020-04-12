@@ -3,10 +3,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'gender_column.dart';
 import 'my_container.dart';
+import 'constants.dart';
 
 const myColor = Color(0xff1C1C2D);
 const activeCardColor = Color(0xff1C1C2D);
 const inactiveCardColor = Color(0xff111328);
+int bmi = 66;
+String result = '';
 
 class InputPage extends StatefulWidget {
   @override
@@ -14,7 +17,10 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  int _duelCommandment = 175;
+  int _height = 175;
+  int _weight = 75;
+  int _age = 30;
+
   Color _maleColor = inactiveCardColor;
   Color _femaleColor = inactiveCardColor;
 
@@ -81,25 +87,22 @@ class _InputPageState extends State<InputPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        _duelCommandment.toString(),
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        _height.toString(),
+                        style: kNumberTextStyle,
                       ),
                       Text(' cm')
                     ],
                   ),
                   Slider(
                     activeColor: Colors.pink,
-                    value: _duelCommandment.toDouble(),
+                    value: _height.toDouble(),
                     min: 100,
                     max: 250,
                     //divisions: 100,
-                    label: '$_duelCommandment',
+                    label: '$_height',
                     onChanged: (double newValue) {
                       setState(() {
-                        _duelCommandment = newValue.round();
+                        _height = newValue.round();
                       });
                     },
                   )
@@ -112,10 +115,112 @@ class _InputPageState extends State<InputPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Expanded(
-                  child: MyContainer(colour: myColor),
+                  child: MyContainer(
+                    colour: myColor,
+                    myChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('WEIGHT'),
+                        Text(
+                          _weight.toString(),
+                          style: kNumberTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            RawMaterialButton(
+                              onPressed: () {
+                                setState(() {
+                                  _weight--;
+                                });
+                              },
+                              shape: CircleBorder(),
+                              constraints:
+                                  BoxConstraints(minHeight: 50, minWidth: 50),
+                              fillColor: Color(0x30ffffff),
+                              child: Icon(
+                                FontAwesomeIcons.minus,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            RawMaterialButton(
+                              onPressed: () {
+                                setState(() {
+                                  _weight++;
+                                });
+                              },
+                              shape: CircleBorder(),
+                              constraints:
+                                  BoxConstraints(minHeight: 50, minWidth: 50),
+                              fillColor: Color(0x30ffffff),
+                              child: Icon(
+                                FontAwesomeIcons.plus,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
                 Expanded(
-                  child: MyContainer(colour: myColor),
+                  child: MyContainer(
+                    colour: myColor,
+                    myChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text('AGE'),
+                        Text(
+                          _age.toString(),
+                          style: kNumberTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            RawMaterialButton(
+                              onPressed: () {
+                                setState(() {
+                                  _age--;
+                                });
+                              },
+                              shape: CircleBorder(),
+                              constraints:
+                                  BoxConstraints(minHeight: 50, minWidth: 50),
+                              fillColor: Color(0x30ffffff),
+                              child: Icon(
+                                FontAwesomeIcons.minus,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            RawMaterialButton(
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    _age++;
+                                  },
+                                );
+                              },
+                              shape: CircleBorder(),
+                              constraints:
+                                  BoxConstraints(minHeight: 50, minWidth: 50),
+                              fillColor: Color(0x30ffffff),
+                              child: Icon(
+                                FontAwesomeIcons.plus,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -124,17 +229,18 @@ class _InputPageState extends State<InputPage> {
             height: 10,
           ),
           FlatButton(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              onPressed: () {},
-              child: Text('CALCULATE'),
-              color: Colors.pink.shade600,
-              textColor: Colors.white
-
-              // Container(
-              //   child:
-              //   decoration: BoxDecoration(color: Colors.red),
-              // ),
-              )
+            color: Colors.pink.shade600,
+            onPressed: () {
+              Navigator.pushNamed(context, '/result');
+              bmi = _height + _weight + _age;
+              if (bmi > 200) {
+                result = 'OBESE';
+              } else {
+                result = 'NORMAL';
+              }
+            },
+            child: Text('CALCULATE'),
+          ),
         ],
       ),
     );
